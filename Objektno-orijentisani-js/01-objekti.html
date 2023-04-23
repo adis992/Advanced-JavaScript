@@ -9,6 +9,56 @@
 </head>
 
 <body>
+    <script>
+        /* var subaruLegacy = {
+             marka: "Subaru",
+             model: "Legacy",
+             width: 1560,
+             color: "black",
+             godiste: 2005,
+             kubikaza: 2.0,
+             snaga: 150,
+         };
+ 
+         console.log (subaruLegacy.marka); */
+
+        //ovo je prvi nacin koristenjem objektnog literala i koristi se kada imamo samo jedan objekat istog tipa
+
+        /* var subaruLegacy = new Object();
+         subaruLegacy.marka = "Subaru";
+         subaruLegacy.model = "Legacy";
+         subaruLegacy.width = 1560;
+         subaruLegacy.color = "black";
+         subaruLegacy.godiste = 2005;
+         subaruLegacy.kubikaza = 2.0;
+         subaruLegacy.snaga = 150;
+         console.log(subaruLegacy.marka);  */
+
+        // ovo je drugi nacin i koristi se kada imamo vise objekata istog tipa, slabo se koristi
+
+        function Car(marka, model, width, color, godiste, kubikaza, snaga) {
+            this.marka = marka;
+            this.model = model;
+            this.width = width;
+            this.color = color;
+            this.godiste = godiste;
+            this.kubikaza = kubikaza;
+            this.snaga = snaga;
+
+            this.startEngine = function () {
+                return "Engine of" + this.marka + " " + this.model + " is started";
+            }
+        }
+
+        var subaruLegacy = new Car("Subaru", "Legacy", 1560, "black", 2005, 2.0, 150);
+        var fordTaurus = new Car("Ford", "Taurus", 1800, "blue", 2003, 2.0, 150);
+        var audiA4 = new Car("Audi", "A4", 1600, "white", 2007, 2.0, 150);
+        console.log(subaruLegacy.startEngine());
+
+    // ovo je treci nacin  ili zvana konstruktorska funkcija, ovaj i prvi nacin sa literalima se koristi najvise
+
+    </script>
+
 
 </body>
 

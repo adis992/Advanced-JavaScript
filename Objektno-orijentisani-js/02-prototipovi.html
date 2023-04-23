@@ -5,11 +5,123 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>JS Prototypes</title>
 </head>
 
 <body>
+    <script>
+        //prototipovi su objekti koji se koriste kao sabloni za kreiranje novih objekata
+        /* function Car (marka, model, width, color, godiste, kubikaza, snaga) {
+             this.marka = marka;
+             this.model = model;
+             this.width = width;
+             this.color = color;
+ 
+             this.startEngine = function () {
+                 return "Engine of" + this.marka + " " + this.model + " is started";
+             }
+         }
+ 
+         //console.log(Car.prototype);
+         // prototype je objekat koji sadrzi sve metode i svojstva koje su definisane u funkciji
+         // constructor je funkcija koja je definisana u prototype objektu
+         // __proto__ je referenca na prototype objekat
+         //protoype sluzi da se izbegne ponavljanje istih metoda i svojstava u svakom objektu
+ 
+ 
+         var subaruLegacy = new Car("Subaru", "Legacy", 1560, "black");
+ 
+         console.log(Object.getPrototypeOf(subaruLegacy));  */
 
+
+        //console.log(subaruLegacy.__proto__ === Car.prototype);
+
+        function Car(make, model, weight, color) {
+            this.make = make;
+            this.model = model;
+            this.weight = weight;
+            this.color = color;
+        }
+
+        Car.prototype.getName = function () {
+            return this.make + " " + this.model;
+        };
+
+        Car.prototype.getInfo = function () {
+            return "Make: " + this.make + "\n" +
+                "Model: " + this.model + "\n" +
+                "Weight: " + this.weight + "\n" +
+                "Color: " + this.color;
+        };
+
+        let car1 = new Car("Subaru", "Legacy", 1560, "black");
+
+        let car1Name = car1.getName();
+        let car1Info = car1.getInfo();
+
+        console.log(car1Name);
+        console.log(car1Info);
+
+
+
+
+
+        function Convertible(make, model, weight, color, roofType) {
+            Car.call(this, make, model, weight, color);
+            this.roofType = roofType;
+        }
+
+
+        Convertible.prototype = Object.create(Car.prototype);
+        Convertible.prototype.constructor = Convertible;
+
+        Convertible.prototype.getInfo = function () {
+           /* return "Make: " + this.make + "\n" +
+                "Model: " + this.model + "\n" +
+                "Weight: " + this.weight + "\n" +
+                "Color: " + this.color;
+                ili na ovaj nacin iskoristavamo logiku koja je vec definisana gore iznad */
+            return Car.prototype.getInfo.call(this) + "\n" +
+            "Roof type: " + this.roofType;
+        }
+
+
+        let convertible1 = new Convertible("Honda", "S2000", 1700, "blue", "soft-top");
+
+        let convertible1Name = convertible1.getName();
+        let convertible1Info = convertible1.getInfo();
+
+        console.log(convertible1Name);
+        console.log(convertible1Info);
+
+
+
+
+
+
+
+        function Pickup(make, model, weight, color, cargoVolume) {  //cargoVolume je zapremina tovarnog prostora u kubnim metrima
+            Car.call(this, make, model, weight, color);  //pozivamo konstruktor iz roditeljske klase
+            this.cargoVolume = cargoVolume;  //dodajemo svojstvo koje je specifično za klasu Pickup koje nije definisano u roditeljskoj klasi
+        }
+        Pickup.prototype = Object.create(Car.prototype);  //nasleđujemo sve metode i svojstva iz roditeljske klase
+        Pickup.prototype.constructor = Pickup;   //postavljamo konstruktor klase Pickup
+        Pickup.prototype.getInfo = function () {   //dodajemo metodu getInfo koja je specifična za klasu Pickup
+            /*return "Make: " + this.make + "\n" +
+                "Model: " + this.model + "\n" +
+                "Weight: " + this.weight + "\n" +
+                "Color: " + this.color + "\n" +  
+                ili na ovaj nacin da ne ponavljamo isto   */
+            return Car.prototype.getInfo.call(this) + "\n" +  //pozivamo metodu getInfo iz roditeljske klase
+                "Cargo volume: " + this.cargoVolume;  //dodajemo svojstvo koje je specifično za klasu Pickup koje nije definisano u roditeljskoj klasi
+        }
+        let pickup1 = new Pickup("Ford", "F-150", 1846, "silver", 63);  //63 je zapremina tovarnog prostora u kubnim metrima
+        let pickup1Name = pickup1.getName();   //pozivamo metodu getName iz roditeljske klase
+        let pickup1Info = pickup1.getInfo();  //pozivamo metodu getInfo iz klase Pickup
+        console.log(pickup1Name);
+        console.log(pickup1Info);
+
+    </script>
 </body>
 
 </html>
