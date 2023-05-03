@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        
+        function sayHello() {
+            console.log("Hello" + name);
+        }
+
+        sayHello("Mosh");
+
+        function sayHelloWorld() {
+            console.log("Hello World");
+        }
+
+        sayHelloWorld();
+
+
+        var calculateArea = new Function("a", "b", "return a * b;");
+        var result = calculateArea(3, 4);
+        console.log(result);
+
+
+        function sum() {
+            let returnValue = 0;      // 0 je neutral za sabiranje
+            for (let i = 0; i < arguments.length; i++) {   // arguments je niz svih argumenata koje smo prosledili funkciji sum, i je brojac , arguments.length je duzina niza
+                returnValue += arguments[i];  // returnValue = returnValue + arguments[i];
+            }
+
+            return returnValue;
+        }
+
+        let sumResult = sum(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        console.log(sumResult);
+
+
+        // funkcija sa for petljom
+
+
+        function countdown(start) {
+            for (let i = start; i >= 0; i--) {
+                console.log(i);
+            }
+        }
+
+        countdown(8);
+
+        //dobijamo 876543210  
+
+        //drugi primjer sa rekurzijom i dodavanje uslova IF
+
+        function countdown(start) {
+
+            if (start < 0) {         //sa ovim postavljamo uslov da je rekurziji poznat kraj funkcije znaci start je veci o 0 kada krene od 4321 doci ce do 0 i nece moci 
+                //do beskonacnosti zbog ovog uslova
+                return;
+            }
+            console.log(start)
+            countdown(--start)
+        }
+
+        countdown(4);
+
+
+
+        // da prolsijedimo niz brojeva i da funkcija to poreda od najmanjeg do najveceg
+        function sort(array) {
+
+            let temp;   //promjenjiva za predhodnu vrijednost niza
+            let sorted = true;
+            for (let i = 0; i < array.length - 1; i++) {   //brojac ce biti i, parametar funcije array ce imat iteraciju manje, i i++ce se uvecavati za 1 vise
+                if (array[i] > array[i + 1]) {
+                    temp = array[i]  //ovdje smjestamo prethodnu vrijednost niza
+                    array[i] = array[i + 1] //zatim na vriednost prethodnog niza prepisemo vrijednost narednog niza
+                    array[i + 1] = temp;               //na mjesto narednog  niza upisujemo vrijednost prethodnog niza kako se ne bi izgubila
+                    sorted = false;
+                }
+            }
+
+            if (!sorted) {       //provjerava da li je false ako jeste obavi rekurziju 
+                sort(array);
+            }
+
+
+            return array;
+        }
+
+        let numArray = [18, 3, 8, 34, 0, 3];
+        numArray = sort(numArray);
+        console.log(numArray);
+
+
+    </script>
+</body>
+
+</html>

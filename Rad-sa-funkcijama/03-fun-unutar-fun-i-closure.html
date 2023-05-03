@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inner function and Closures</title>
+</head>
+
+<body>
+    <script>
+        (function () {           //ovo je samopozivajuca funkcija...samo za jednu oblast vazenja se koristi ovaj nacin
+            console.log("Hello from self-invoking function");
+        })();
+
+
+        ///drugi primjer samopozivajuce funkcije
+
+        (function () {
+            var number = 5;
+            console.log(number);
+        })();
+
+
+
+        //////////***jedna funkcija u drugoj *//////////////////
+        function substractSquares(a, b) {
+            function square(x) {      //ova unutrasnja funkcija na globalno nivou ne moze biti pozvana tj square samo dobit cemo Refference Error.
+                return x * x;
+            }
+            return square(a) - square(b);
+        }
+
+        console.log(substractSquares(6, 3))
+
+
+
+        ////////////////////////////////// CLOSURE  /////////////////////////////
+
+        //KORISTI SE SAMO U NEKIM SITUACIJAMA
+
+        //primjer 1
+
+        /*
+                function generateCoupon(firstName, lastName){
+                    var code = (Math.random()* 10e16).toString();
+        
+                    //send code, firstName and LastName over the Network
+                    return "Hello " + lastName +" " + firstName +  ".Your coupon has ben Generated." 
+                }
+        
+        
+                var response = generateCoupon("John", "Lord");
+        
+                console.log(response);
+        
+                console.log(code);  ///kada ovo pokusamo dobit cemo error jer ne mozemo korisiti variablu van funkcije jernije globalna tada cemo promijeniti logiku na sljedeci nacin CLOUSURE
+        */
+        ///*****ispravljeni kod koji ce raditi je///////////****
+
+
+        function Coupon(firstName, lastName) {
+            var code = (Math.random() * 10e16).toString();
+
+            this.firstName = firstName;
+            this.lastName = lastName;
+
+
+            this.getCode = function () { return code };      ///ovo je CLOSUre i to je funkcija jedina kojoj se moze pristupiti kodu ako u console log napisemo (coupon1.getcode())
+        }
+
+        let coupon1 = new Coupon("Brad", "Pitt");
+        console.log(coupon1.getCode());
+
+
+
+
+        ////////////////////////////////////////***********primjer 2  **************////////////////////////////////////////////////////////
+
+
+        let sayHello = (function () {
+            const greeting = "Hello";
+
+            return {
+                to: function (name) {                /////closure....i nakon izvrsavanja funkcije ona nestaje ali i dalje ce ostati vrijednost ista za svako novo ime john, adis, pero 
+                    return greeting + name;
+                }
+            }
+
+
+        })();
+
+        let greeting = sayHello.to("John");
+
+        console.log(greeting);
+
+        //////////////////emitovanje funkcije kao povratne vrijednosti ///////////////////////
+        ////////////HIGHER-ORDER FUNKCIJA//////////////
+        function sum(a) {
+            return function (b) {
+                return a + b;
+            }
+        }
+
+        let result = sum(5)(3);
+
+        console.log(result);
+
+
+    </script>
+</body>
+
+</html>

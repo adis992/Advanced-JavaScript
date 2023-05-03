@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singleton in JavaScript</title>
+</head>
+
+<body>
+
+    <button id="show-status-button">Get Status</button>
+    <script>
+        var User = (function () {
+
+            var instance;
+
+            function createInstance() {
+
+                var numberOfClicks = 0;
+                var dateTimeStart;
+                var dateTimeEnd;
+
+                return {
+
+                    incrementNumberOfClicks: function () {
+                        numberOfClicks++;
+                    },
+
+                    startSession: function () {
+                        dateTimeStart = new Date();
+                    },
+
+                    endSession: function () {
+                        dateTimeEnd = new Date();
+                    },
+
+                    getNumberOfClicks: function () {
+                        return numberOfClicks;
+                    },
+                    getDateTimeStart: function () {
+                        return dateTimeStart.toDateString();
+                    },
+
+                    getDateTimeEnd: function () {
+
+                        if (dateTimeEnd !== undefined) {  ///!==  da li je jednak
+                            return dateTimeEnd.toDateString();
+                        }
+
+                        return "-";
+                    }
+
+                };
+
+            };
+
+            return {
+
+                getInstance: function () {
+
+                    if (!instance) {
+                        instance = createInstance();
+                    }
+
+                    return instance;
+                }
+
+            };
+
+        })();
+
+        var user = User.getInstance();
+        user.startSession();
+
+        document.addEventListener("click", function () {
+            user.incrementNumberOfClicks();
+        });
+
+
+        var statusButton = document.getElementById("show-status-button");
+
+        statusButton.addEventListener("click", function () {
+            alert("Session start: " + user.getDateTimeStart() + "\n" +
+                "Session end: " + user.getDateTimeEnd() + "\n" +
+                "Number of clicks: " + user.getNumberOfClicks());
+        });
+
+        window.onbeforeunload = function () {
+
+            user.endSession();
+            //save state if you like
+        };
+
+
+
+
+
+
+
+
+
+//////////////////detaljniji opis lekcije ///////////////////////
+
+        /*
+        Singleton dizajn šablon
+        
+        Samopozivajuće funkcije i Closurei osnova su za praktičnu realizaciju još jednog veoma popularnog dizajn šablona u JavaScriptu. Reč je o softverskom dizajn šablonu Singleton.
+        
+        Singleton je dizajn šablon koji propisuje postojanje samo jedne instance nekog tipa. Drugim rečima, Singleton nalaže rukovanje nekim tipom koje se uvek obavlja korišćenjem jedne iste instance. Tako, poštovanjem Singleton šablona, nije moguće kreirati dva objekta jednog istog tipa.
+        
+        Singleton je jedan od najpopularnijih softverskih dizajn šablona koji se primenjuje kako na backendu, tako i na frontendu. U JavaScriptu Singleton se može koristiti za realizaciju različitih ponašanja koja zahtevaju postojanje samo jednog objekta tokom čitavog životnog toka stranice. Pored toga, veliki broj JavaScript biblioteka interno koristi upravo Singleton šablon kako bi ograničile kreiranje dodatnih instanci biblioteka na jednoj stranici.
+        
+        U nastavku će realizacija Singleton softverskog šablona biti ilustrovana na primeru jednog objekta koji čuva podatke o korisniku, odnosno posetiocu stranice. S obzirom na to da je iz ugla frontenda posetilac uvek samo jedan, potpuno je logično da vrednosti i ponašanja u vezi sa korisnikom budu modelovana tipom koji može imati samo jednu instancu.
+        
+      
+        var User = (function () {
+         
+            var instance;
+         
+            function createInstance() {
+         
+                var numberOfClicks = 0;
+                var dateTimeStart;
+                var dateTimeEnd;
+         
+                return {
+         
+                    incrementNumberOfClicks: function () {
+                        numberOfClicks++;
+                    },
+         
+                    startSession: function () {
+                        dateTimeStart = new Date();
+                    },
+         
+                    endSession: function () {
+                        dateTimeEnd = new Date();
+                    },
+         
+                    getNumberOfClicks: function () {
+                        return numberOfClicks;
+                    },
+                    getDateTimeStart: function () {
+                        return dateTimeStart.toDateString();
+                    },
+         
+                    getDateTimeEnd: function () {
+         
+                        if (dateTimeEnd !== undefined) {
+                            return dateTimeEnd.toDateString();
+                        }
+         
+                        return "-";
+                    }
+         
+                };
+         
+            };
+         
+            return {
+         
+                getInstance: function () {
+         
+                    if (!instance) {
+                        instance = createInstance();
+                    }
+         
+                    return instance;
+                }
+         
+            };
+         
+        })();
+        
+        Unutar upravo prikazane anonimne, samopozivajuće funkcije realizovan je Singleton dizajn šablon. Odmah možete primetiti sličnost sa nešto ranije prikazanom realizacijom Module šablona. Naime, Module šablon je osnova za realizaciju brojnih drugih šablona u JavaScriptu, pa je tako i sa Singletonom.
+        Unutar prikazane anonimne funkcije, na početku potrebno je uvideti tri osnovne celine:
+        
+        promenljiva instance - koristi se za čuvanje reference na instancu Singleton objekta;
+        funkcija createInstance() - koristi se za kreiranje Singleton objekta;
+        objekat koji se emituje kao povratna vrednost.
+        
+        Izvršavanjem prikazane anonimne funkcije, promenljivoj User dodeljuje se objekat, koji se iz funkcije emituje kao povratna vrednost. Takav objekat poseduje samo jednu metodu – getInstance(). Reč je o metodi kojom se dobija Singleton objekat. Unutar nje se prvo proverava da li je objekat prethodno kreiran. Ukoliko nije, kreira se pozivanjem metode createInstance(). Ukoliko je objekat prethodno već kreiran, ne obavlja se njegovo ponovno kreiranje, već se isporučuje referenca koja je prethodno smeštena unutar promenljive instance. Upravo opisani koraci osnovni su mehanizam koji osigurava da će svaki poziv funkcije getInstance() uvek rezultovati isporukom identičnog objekta.
+        
+        Objekat koji se dobija pozivanjem metode getInstance() emituje se kao povratna vrednost ove metode. Možete videti da je reč o klasičnom Closureu. Funkcija getInstance() poseduje tri promenljive (numberOfClicks, dateTimeStart, dateTimeEnd), koje su privatne. Njima se ne može pristupiti izvan kreirane funkcije. Stoga se unutar Singleton objekta nalazi nekoliko metoda kojima se omogućava interakcija sa ovim svojstvima. Ideja je da se unutar Singleton objekta čuvaju neke osnovne informacije o korisničkoj sesiji – kada je započela, kada je završena i koliko je puta korisnik kliknuo mišem negde unutar stranice. Sesija se kreira pozivanjem metode startSession() i tom prilikom beleže se datum i vreme kada je tako nešto obavljeno. Završetak sesije se obavlja pozivanjem metode endSession() i tom prilikom se takođe obavlja smeštanje datuma u odgovarajuću privatnu promenljivu. Singleton objekat poseduje i metodu incrementNumberOfClicks() kojom je moguće upisati novi korisnički klik, ali i tri metode za čitanje vrednosti privatnih promenljivih.
+        
+        Singleton objekat se može dobiti na sledeći način:
+        
+        1
+        var user = User.getInstance();
+        
+        Bez obzira na to koliko puta mi pozvali metodu getInstance(), ona će uvek isporučiti identičan objekat:
+        
+        1
+        2
+        3
+        4
+        var user = User.getInstance();
+        var user2 = User.getInstance();
+         
+        console.log(user === user2);
+        
+        Primer rezultuje ispisom vrednosti true unutar konzole, što je dokaz da promenljive user i user2 poseduju reference na identičan objekat.
+        
+        Kod kojim se kreirani Singleton može praktično iskoristiti na nekoj stranici izgleda ovako:
+        
+      
+        var user = User.getInstance();
+        user.startSession();
+         
+        document.addEventListener("click", function () {
+            user.incrementNumberOfClicks();
+        });
+         
+         
+        var statusButton = document.getElementById("show-status-button");
+         
+        statusButton.addEventListener("click", function () {
+            alert("Session start: " + user.getDateTimeStart() + "\n" +
+                "Session end: " + user.getDateTimeEnd() + "\n" +
+                "Number of clicks: " + user.getNumberOfClicks());
+        });
+         
+        window.onbeforeunload = function () {
+         
+            user.endSession();
+            //save state if you like
+        };
+        
+        U primeru se prvo dolazi do Singleton objekta. Zatim se poziva metoda za započinjanje sesije. Nakon toga je obavljena registracija logike koja će se aktivirati prilikom svakog klika 
+        unutar stranice. Tom prilikom pozivaće se incrementNumberOfClicks() metoda Singleton objekta, te ćemo na ovaj način moći da pratimo broj klikova korisnika.
+        Primer podrazumeva i postojanje jednog button elementa unutar HTML koda. Zbog toga primer poseduje i kod koji obrađuje klik na takav button element. Klikom na button element
+         prikazuje se status korisnika – vreme početka i kraja sesije i broj klikova.
+        Na kraju, poslednjim blokom koda obavljena je pretplata i na događaj koji se aktivira neposredno pre nego što se stranica napusti. Tada se poziva metoda za zatvaranje sesije. 
+        Dodat je i komentar, na čije mesto je moguće postaviti kod za čuvanje prikupljenih podataka o korisniku njihovim slanjem, na primer, nekom udaljenom serveru.*/
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Anonymous and Arrow Functions</title>
+</head>
+
+<body>
+    <script>
+        /*var a = function(x) {     //funkcija bez imena ili anonimne funkcije...i funkc je dodijeljenja promjenjivoj a
+            return x*x;
+        }
+        console.log(a(5))
+        */
+
+
+        /*
+        function sayHello(name) {
+            console.log("Hello" + name)
+        }
+        sayHello("Ben");
+
+*/
+
+        let names = ["Pero", "Adis", "Ten", "Ben", "David"]     //varijabla names - niz imena
+
+        function sayHelloToMany(names, sayHelloToOne) {  //funkcija s 2 parametra
+            for (let i = 0; i < names.length; i++) {
+                sayHelloToOne(names[i]);   //i index u nizu
+            }
+        }
+
+        sayHelloToMany(names, function (name) { //ovdje je drugi parametar odnosno function(name) anonimna funkcija
+            console.log("Hello " + name);
+        })
+
+
+        /***************AROW FUNKCIJE *********************************************/
+
+        var a = (x) => { return x * x };   // =>  zbog ovoga se i nazivaju arow funkcije i ne pise se functin prilikom poziva
+        console.log(a(5));  ///ukoliko ide jedan parametar gdje je (x) moze i bez zagrada ako ih ima vise obavezno idu zagrade
+        //isto vazi i ukoliko arrow funkcija ima samo jednu naredbu kao gore iznad return x*x mozemo obrisati zagradu i ostaviti samo x*x   
+
+        //ovako bi izgledalo najkompaktnija arow funkcija    var a = x => x*x; 
+
+        //primjer sa 1 parametrom i ide bez zagrada kao sto smo pisali
+        var a = name => { console.log("Hello " + name) };
+        a("Ben");
+
+        //primjer s 2 parametra
+        var a = (x, y) => x * y;
+        console.log(a(5, 10));  //rez je 50
+
+        //ako posjeduje arow vise od jedne naredbe npr.
+        var a = (x, y) => { x++; return x * y };
+        console.log(a(5, 10)); //rez je 60 zato sto smo x++ uvecali vrijednost parametra x za 1
+
+        //primjer sa vise imena sa arow funkcijom
+
+        let namess = ["Pero1", "Adis1", "Ten1", "Ben1", "David1"]
+        function sayHelloToMany(names, sayHelloToOne) {  //funkcija s 2 parametra
+            for (let i = 0; i < names.length; i++) {
+                sayHelloToOne(names[i]);   //i index u nizu
+            }
+        }
+        sayHelloToMany(namess, name => { console.log("Hello " + name) });
+
+
+        /***********************funkcija THIS *******************************/a
+
+        function Student() {
+            this.courses = [];
+            this.addCourses = function(courses) {    // funkcija koja prihvata niz kurseva
+               
+                var self = this;   
+
+                courses.forEach(function(value, index) {   //ovdje prolazimo kroz niz koriscvenjem forEach funkcije, i za svaki niz ce se korisiti anonimna funkcija sa vrijednosti value
+                    self.courses[index] = value;
+                });
+            }
+        }
+
+        var s = new Student();
+        s.addCourses(["Math", "Geo", "History"]);
+        console.log(s.courses);
+
+
+
+        ////////////////////////sa koriscenjem arow funkcije zadatak iznadbi izgledao ovako ///////////////////////////////
+
+        function Student() {
+            this.courses = [];
+
+            //var self = this;    OVO IZBACUJEMO A KORISTIMO AROW FUKCIJU I NEMAMO PROBLEMA SA KORISCENJEM KLJUCNE RIJECI THIS
+            //ZATO STO THIS UNUTAR AROW UVIJEK IMA VRIJEDNOST KONTEKSTA U KOME SE NALAZI
+
+            this.addCourses = function(courses) {    // funkcija koja prihvata niz kurseva
+                courses.forEach((value, index) => {   //ovdje prolazimo kroz niz koriscvenjem forEach funkcije, i za svaki niz ce se korisiti anonimna funkcija sa vrijednosti value
+                    this.courses[index] = value;
+                });
+            }
+        }
+
+        var s = new Student();
+        s.addCourses(["Math", "Geo", "History"]);
+        console.log(s.courses);
+
+
+
+    </script>
+</body>
+
+</html>
