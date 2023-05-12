@@ -10,6 +10,48 @@
 
 <body>
     <script>
+        class Student {
+            constructor(name, address, phone, course) {
+                this.name = name;
+                this.address = address;
+                this.phone = phone;
+                this.course = course;
+            }
+        }
+        async function fetchStudentsData() {
+            let response = await fetch('https://v-dresevic.github.io/Advanced-JavaScript-Programming/data/students.txt');
+            let data = await response.text();
+            let lines = data.split('\n');
+
+            let students = [];
+            for (let i = 0; i < lines.length; i += 4) {
+                let student = new Student(lines[i], lines[i + 1], lines[i + 2], lines[i + 3]);
+                students.push(student);
+            }
+
+            return students;
+        }
+
+        function displayStudents(students) {
+            students.forEach(student => {
+                let div = document.createElement('div');
+                div.innerHTML = `
+            <h2>${student.name}</h2>
+            <p>${student.address}</p>
+            <p>${student.phone}</p>
+            <p>${student.course}</p>
+        `;
+                document.body.appendChild(div);
+            });
+        }
+
+        fetchStudentsData()
+            .then(students => {
+                displayStudents(students);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
 
 
     </script>
