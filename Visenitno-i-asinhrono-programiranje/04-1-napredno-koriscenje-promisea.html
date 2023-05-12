@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+        new Promise(function (res, rej) {
+            res(4);
+        }).then((value) => {
+            console.log(value);
+
+            return new Promise(function (res, rej) {
+                setTimeout(() => res(value * value), 2000);
+            });
+        }).then((value) => {
+            console.log(value);
+        });       
+         */
+
+
+
+        ////////////*********primjer nadovezivanja promise-a sa then metodom*********///////////
+
+
+        /*  function delay(time) {
+              return new Promise(function (resolve, reject) {
+                  setTimeout(resolve, time);
+              });
+          }
+  
+          delay(4000).then(function () {
+              console.log("4 seconds passed...");
+              return delay(2000);
+          }).then(function () {
+              console.log("2 more seconds passed...");
+              return delay(3000);
+          }).then(function () {
+              console.log("3 more seconds passed...");
+          });
+  
+          */
+
+
+
+
+        //Osnovni način za signaliziranje pojave greške tokom logike Promisea jeste pozivanje metode na koju upućuje drugi parametar funkcije egzekutor:
+        let promise = new Promise(function (resolve, reject) {
+            setTimeout(() => reject(new Error("Unknown error.")), 3000);
+        });
+
+
+
+        //Osnovni način na koji se konzumira rejected Promise jeste definisanje logike koja će se u takvoj situaciji aktivirati, 
+        //i to njenim smeštanjem unutar callback funkcije koja se, kao drugi parametar, prosleđuje metodi then():
+        promise.then(function (result) {
+            console.log(result);
+        }, function (error) {
+            console.log(error);
+        });
+
+
+        /*     Dojavu o grešci unutar Promisea moguće je konzumirati i korišćenjem metode catch() prikazane u prethodnoj lekciji:
+     
+        promise.catch(function(error) {
+        console.log(error);
+        });
+     
+        */
+
+
+        
+    </script>
+</body>
+
+</html>

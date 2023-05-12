@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function getName() {
+            return new Promise(function (reslove, reject) {
+                setTimeout(() => reslove("Ben"), 3000);
+            });
+        }
+
+        async function sayHello() {
+            let name;
+
+            name = await getName();    ///await ce pricekati da se funkcija get name odradi pa ce prikazati ime
+
+            return "Hello " + name;
+
+        }
+
+
+        sayHello().then(function (result) {
+            console.log(result);
+        });
+
+        console.log("some other code");
+
+
+    </script>
+</body>
+
+</html>

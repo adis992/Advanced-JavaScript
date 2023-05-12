@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>setTimeout i setInterval </title>
+</head>
+<body>
+    <button id="my-button">Click me</button>
+
+    <h1 id="heading">setInterval()</h1>
+    <script>
+        console.log("Statement 1");
+        setTimeout(function(){  //kao parametar prihvata funkciju u ovom slucaju callBack funkciju, isto takodje ne blokira izvrsenje daljnjeg koda prikazat ce se 1 i 3 i nakon 2sec i 2
+            console.log("Statement 2");
+        }, 2000); //2000ms milisekunde to jeste 2 sekunde   
+        console.log("Statement 3");
+
+
+
+        //kada bih postavili statement 2 na 0 i dalje bi redoslijed bio 1 3 pa 2 iz tog razloga sto se CALL STACK ili glavne niti prvo izvrasavaju pa tek onda funkcija
+
+
+        /////***PRIMJER 2**/////
+
+        var timeout1 = setTimeout(function(){
+            console.log("Statement 2")
+        }, 2000);
+
+        clearTimeout(timeout1);
+
+        //u ovom slucaju se nece nista ispisati u konzoli jer smo pozvali funkciju cleartimeout
+
+
+        ////**Primjer 3***///
+        var timeout1 = setTimeout(function(name){
+            console.log("Hello"+ name);
+        },2000, "Ben");    //u ovom primjeru parametaru name proslijedjujemo ime pozivanjem SetTimeout funkcije
+
+
+        ////////*******PRIMJER 4*****////////////////
+        console.log ("Statement 1");
+
+        var timeout1 = setTimeout(function (){
+            console.log("Statement 2");
+        }, 2000);
+
+        var timeout2 = setTimeout (function(timeout){        ////ova funkcija ce ocistiti timeout i prikazati timeout 1 is cleared jer clear timeout ce ubiti timeout1
+            clearTimeout(timeout);
+            console.log("Timeout 1 is cleared...");
+        }, 1000, timeout1);
+
+        console.log("Statement 5");
+
+
+
+        /////////////////////***************SET INTERVAL PRIMJER*****************************///////////////////////////////
+        //interval izvrsava funkcionalnost iznovba i iznova sa odredjenim fixnim razmacima
+
+        let heading = document.getElementById("heading");
+
+        function changeColor(elem){
+            elem.style.color = elem.style.color == 'red' ? 'blue' : 'red';  //ukoliko je trenutna boja jednaka crvenoj onda ce ici u plavu u protivnom ce boju da postavi u crveno.
+        }
+
+         let interval1 = setInterval(changeColor, 500, heading);
+
+         setTimeout (function(intervalId){
+            clearInterval(intervalId);
+         },5000,interval1);
+
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timing and Callback functions/ redoslijed izvrsavanja operacija</title>
+</head>
+
+<body>
+
+<button id="my-button">Click me</button>
+
+    <script>    
+        var myButton = document.getElementById("my-button");
+        myButton.addEventListener("click", function(){        //ova funkcija se jos zive i callBack funkcija- preko koje ce se nama nesto dojaviti  i vratiti
+            alert ("Hello from modal window");      //primjer sinhrone metode, kada izadje alert i sve dok user ne pritisne ok, js okruzenje je pauzirano i kad pritisne ok izlati i console log napisan ispod.
+            console.log("Hello from statement after alert () method.");
+        });
+
+        console.log("Hello from ssome code after addEventListner () method.");
+
+
+
+
+        
+
+    </script>
+</body>
+
+</html>

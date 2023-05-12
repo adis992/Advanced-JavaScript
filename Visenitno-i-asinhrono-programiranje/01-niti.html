@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Treads-Blokirajuce operacije</title>
+</head>
+<style>
+    #my-button {
+        width: 200px;
+        height: 40px;
+        color: white;
+        background-color: teal;
+        border-radius: 4px;
+        line-height: 40px;
+        text-align: center;
+        font-family: sans-serif;
+    }
+
+    #my-button:hover {
+        background-color: rgb(30, 109, 109);
+        cursor: pointer;
+        font-weight: bold;
+    }
+</style>
+
+<body>
+    <div id="my-button">Click Me!</div>
+    <script>
+        var myButton = document.getElementById("my-button")
+       
+        myButton.addEventListener("click", function(){
+             //time intesive operation start
+            const worker = new Worker('time-intesive.js');   //ovdje pozivamo WEB WORKER API js fajl u kojem smo izolovali samopozivajucu operaciju da bih se ostalo izvrsavalo kako treba bezt prekida
+            worker.postMessage('Start!');
+   
+            //time intesive operation end
+            console.log("Hello from statement after rime intesive operation.")
+
+
+            worker.onmessage = function(e) {
+                console.log(e.data.length);
+            }
+        });  ///pretplatit cemo se na button element 
+    </script>
+</body>
+
+</html>

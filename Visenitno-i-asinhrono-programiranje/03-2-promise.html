@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primjer 2</title>
+</head>
+
+<body>
+    <script>
+
+        ///////////******PRIMJER 1-USPJESNO******////////
+        function delay(time) {
+            return new Promise(function (resolve, reject) {
+                setTimeout(resolve, time);
+            });
+        }
+
+        delay(4000).then(function () {
+            console.log("4 seconds passed...");
+        });
+
+
+        ///////////******PRIMJER 2-NEUSPJESNO******////////
+        //CATCH metoda se koristi za neuspjesno izvrsavanje PROMISE-a
+
+
+        function delay(time) {
+            return new Promise(function (resolve, reject) {
+                //setTimeout(reject, time);   ovdje ce biti undefined jer nije definisan error kao odmah ispod
+                setTimeout(function () {
+                    reject("Unknown Error.")
+                }, time);
+
+                //signaliziranje greske mozemo i pravilnije je odraditi ovako  reject(new Error("Unknow Error"));
+            });
+        };
+
+
+        delay(7000).catch(function (error) {    ///ovo je neuspjesno izvrsavanje logike i dobit cemo result undefined zato sto error nije definisan a posto promise mora vratit neuspjesno biti ce undefined
+            console.log(error);
+        });
+        //catch methoda je skracenica za then recimo mozemo pisati ovako sto daje isti rezultat
+       /* elay(7000).then(null, function (error) {
+            console.log(error);
+        });
+        */
+
+
+        //takodje i imamo i finally metodu koja ne prihvata nikakve parametre i samo jednu funkciju primjer ispod
+        //s tim da ne znamo je li se operacija izvrsila uspjesno ili neuspjesno i to ispisemo u console log-u kao obavijest tj. ne mozemo obraditi gresku il uspjeh unutar promise kao sa then i catch metodom
+        /*
+        delay(7000).finally(function(){
+            console.log(error);
+        });
+        */
+    </script>
+</body>
+
+</html>
