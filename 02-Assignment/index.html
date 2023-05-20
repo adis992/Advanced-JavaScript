@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Student Information</title>
 </head>
-
 <body>
+    <div id="student-info"></div>
+
     <script>
         class Student {
             constructor(name, address, phone, course) {
@@ -17,44 +17,88 @@
                 this.phone = phone;
                 this.course = course;
             }
-        }
-        async function fetchStudentsData() {
-            let response = await fetch('https://v-dresevic.github.io/Advanced-JavaScript-Programming/data/students.txt');
-            let data = await response.text();
-            let lines = data.split('\n');
 
-            let students = [];
+            getInfo() {
+                return "Name: " + this.name + "<br>" + " Address: " + this.address + "<br>" + " Phone: " + this.phone + "<br>" + " Course: " + this.course;
+            }
+        }
+
+        async function fetchStudentData() {
+            const response = await fetch('https://v-dresevic.github.io/Advanced-JavaScript-Programming/data/students.txt');
+            const data = await response.text();
+            processStudentData(data);
+        }
+
+        function processStudentData(data) {
+            const lines = data.split('\n');
+            const students = [];
+
             for (let i = 0; i < lines.length; i += 4) {
-                let student = new Student(lines[i], lines[i + 1], lines[i + 2], lines[i + 3]);
+                const name = lines[i];
+                const address = lines[i + 1];
+                const phone = lines[i + 2];
+                const course = lines[i + 3];
+
+                const student = new Student(name, address, phone, course);
                 students.push(student);
             }
 
-            return students;
+            displayStudentData(students);
         }
 
-        function displayStudents(students) {
-            students.forEach(student => {
-                let div = document.createElement('div');
-                div.innerHTML = `
-            <h2>${student.name}</h2>
-            <p>${student.address}</p>
-            <p>${student.phone}</p>
-            <p>${student.course}</p>
-        `;
-                document.body.appendChild(div);
-            });
+        function displayStudentData(students) {
+            const div = document.getElementById('student-info');
+
+            for (let i = 0; i < students.length; i++) {
+                div.innerHTML += students[i].getInfo() + "<br><br>";
+            }
         }
 
-        fetchStudentsData()
-            .then(students => {
-                displayStudents(students);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-
-
+        fetchStudentData();
     </script>
 </body>
-
 </html>
+
+
+
+Assignment - Čitanje podataka o studentima
+Povratak na module
+
+Zadatak
+Potrebno je kreirati JavaScript program kojim se čita sadržaj fajla sa podacima o studentima i na osnovu takvih podataka kreiraju Student objekti. Nakon kreiranja niza Student objekata, potrebno je unutar stranice prikazati podatke o pročitanim studentima.
+
+Za kreiranje objekata studenata, potrebno je koristiti šablon kreiran u prethodnom assignmentu. Tako ovaj assignment predstavlja nadogradnju prethodnog.
+
+Fajl sa podacima o studentima nalazi se na sledećoj putanji:
+
+https://v-dresevic.github.io/Advanced-JavaScript-Programming/data/students.txt
+
+Reč je o običnom tekstualnom fajlu, unutar koga su podaci o nekoliko studenata složeni na sledeći način:
+
+Ebonie Rangel
+7175 Yukon Street
+(507) 833-3567
+Geography
+Keenan Ellwood
+2 Elm Lane
+(894) 831-6482
+History
+
+Prikazani isečak fajla ilustruje podatke dva studenta. Svaki pojedinačni podatak se navodi jedan ispod drugog. Tako se dobija sledeći format:
+
+ime
+adresa
+telefon
+kurs
+ime
+adresa
+telefon
+kurs
+
+Za čitanje podataka fajla potrebno je koristiti ugrađenu metodu fetch(), kao što je to ilustrovano u lekcijama kursa. Pritom je moguće direktno rukovati Promiseima ili koristiti async/await pristup.
+
+Nakon čitanja podataka iz fajla, njih je potrebno parsirati i na osnovu njih kreirati Student objekte. Parsiranje je moguće obaviti korišćenjem metode split() String objekta. Pročitani tekst je najbolje podeliti po prelomima redova, navođenjem "\n" za parametar split() metode. Kroz niz koji se dobija od split() metode, zatim je potrebno proći i kreirati pojedinačne Student objekte. Na kraju je potrebno sve podatke Student objekata ispisati na stranici, tako da se dobije efekat poput ovog na slici:
+
+ 
+
+Napomena: Zadatak je potrebno dostaviti voditelju preko e-learning platforme kao zapakovan (zip ili rar) fajl.
